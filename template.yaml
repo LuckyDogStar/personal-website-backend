@@ -126,7 +126,7 @@ Resources:
             Path: /get
             Method: GET
             RestApiId:
-             Ref: ApiGatewaApi
+             Ref: ApiGatewayApi
 
   PutFunction:
     Type: AWS::Serverless::Function 
@@ -145,5 +145,5 @@ Resources:
             Path: /put
             Method: GET
             RestApiId:
-             Ref: ApiGatewaApi
+             Ref: ApiGatewayApi
 
