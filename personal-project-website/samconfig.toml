@@ -1,9 +1,0 @@
-version = 0.1
-[default]
-[default.deploy]
-[default.deploy.parameters]
-stack_name = "personal-project-site"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-loz0z9td1sd"
-s3_prefix = "personal-project-site"
-region = "us-east-1"
-capabilities = "CAPABILITY_IAM"
