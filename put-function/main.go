@@ -54,7 +54,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	return events.APIGatewayProxyResponse{
 		Headers: map[string]string{
 			"Access-Control-Allow-Origin":  "https://ryandriver.me",
-			"Access-Control-Allow-Methods": "GET,PUT,OPTIONS",
+			"Access-Control-Allow-Methods": "GET,OPTIONS",
 			"Access-Control-Allow-Headers": "*",
 		},
 		StatusCode: 200,

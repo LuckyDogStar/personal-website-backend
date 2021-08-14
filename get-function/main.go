@@ -44,7 +44,6 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	return events.APIGatewayProxyResponse{
-		// TODO: This is temporary, come back to fix this later
 		Headers: map[string]string{
 			"Access-Control-Allow-Origin":  "https://ryandriver.me",
 			"Access-Control-Allow-Methods": "GET,OPTIONS",
