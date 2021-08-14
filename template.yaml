@@ -35,10 +35,10 @@ Resources:
   PersonalSiteCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
-      DomainName: ryandriver.me
+      DomainName: !Ref DomainNameParameter
       ValidationMethod: DNS
       SubjectAlternativeNames:
-       - "*.ryandriver.me"
+       - !Join ["", ["*.", !Ref DomainNameParameter]]
      
 
   DynamoDBTable:
@@ -61,8 +61,8 @@ Resources:
           AcmCertificateArn: !Ref PersonalSiteCertificate
           SslSupportMethod: sni-only
         Aliases:
-          - ryandriver.me
-          - "*.ryandriver.me"
+          - !Ref DomainNameParameter
+          - !Join ["", ["*.", !Ref DomainNameParameter]]
         DefaultCacheBehavior:
           ViewerProtocolPolicy: redirect-to-https
           TargetOriginId: personal-project-website.s3.us-east-1.amazonaws.com
