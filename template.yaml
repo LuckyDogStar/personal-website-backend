@@ -5,10 +5,23 @@ Description: >
   
   Sample SAM Template for personal-project-website
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 5
+
+Parameters:
+  HostedZoneParameter:
+    Type: String
+    Description: The hosted zone for the Route53 records
+    Default: "Z0362528N1HUG75PL3D0"
+  ApiDomainNameParameter:
+    Type: String
+    Description: The subdomain of the API
+    Default: "api."
+  DomainNameParameter:
+    Type: String
+    Description: The website domain
+    Default: "ryandriver.me"
 
 Resources:
   PersonalProjectWebsite:
@@ -83,9 +96,21 @@ Resources:
                 - !Ref PersonalProjectWebsite
                 - /*
       Bucket: !Ref PersonalProjectWebsite
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Domain:
+        DomainName:
+          !Join ["", [!Ref ApiDomainNameParameter, !Ref DomainNameParameter]]
+        CertificateArn: !Ref PersonalSiteCertificate
+        Route53:
+          HostedZoneId:
+            Ref: HostedZoneParameter
       
   GetFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function 
     Properties:      
       Policies:
        - DynamoDBCrudPolicy:
@@ -93,16 +118,18 @@ Resources:
       CodeUri: get-function/
       Handler: get-function
       Runtime: go1.x
-      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Tracing: Active 
       Events:
         CatchAll:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
           Properties:
             Path: /get
             Method: GET
+            RestApiId:
+             Ref: ApiGatewaApi
 
   PutFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function 
     Properties:
       Policies:
        - DynamoDBCrudPolicy:
@@ -110,11 +137,13 @@ Resources:
       CodeUri: put-function/
       Handler: put-function
       Runtime: go1.x
-      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Tracing: Active 
       Events:
         CatchAll:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
           Properties:
             Path: /put
             Method: GET
+            RestApiId:
+             Ref: ApiGatewaApi
 
